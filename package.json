@@ -1,0 +1,25 @@
+{
+  "name": "nasa-node-1",
+  "version": "1.0.0",
+  "description": "test nasa api",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parazit-mc/nasa-node.git"
+  },
+  "author": "Oleg Belyj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/parazit-mc/nasa-node/issues"
+  },
+  "homepage": "https://github.com/parazit-mc/nasa-node#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "dependencies": {
+    "express": "^4.18.3"
+  }
+}
