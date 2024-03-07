@@ -1,19 +1,20 @@
 /**
  * counts asteroids seen in specified period of time
+ * moving envs to a .env file
 **/
-
+const path = require('path')
 const qs = require('qs');
-const BASE_URL = 'https://api.nasa.gov/neo/rest/v1/feed';
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+
 const START_DATE = '2024-02-26';
 const END_DATE = '2024-03-01';
-const API_KEY = 'A8qsyVUCdItdYl2csBabMafv8N7MbnFuNaGKgU4b';
 const queryParams = {
     START_DATE: START_DATE,
     END_DATE: END_DATE,
-    API_KEY: API_KEY
+    API_KEY: process.env.API_KEY
 };
 
-const uri = `${BASE_URL}?${qs.stringify(queryParams)}`;
+const uri = `${process.env.BASE_URL}?${qs.stringify(queryParams)}`;
 
 fetch(uri)
 .then(response=>response.json())
