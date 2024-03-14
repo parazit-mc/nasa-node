@@ -1,6 +1,6 @@
 const { getImage } = require('../services/imageService')
 
-const roverImageController = async (req, res, next)=> {
+const imageController = async (req, res, next)=> {
     try {
         const result = await getImage(req);
         res.status(200).send({result});
@@ -10,4 +10,4 @@ const roverImageController = async (req, res, next)=> {
     }
 }
 
-module.exports = {roverImageController};
+module.exports = { imageController };
