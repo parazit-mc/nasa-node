@@ -24,7 +24,7 @@ if (isHazardous){
 
 if (count){
     result = result.slice(0, count);
-};
+}
 
     return result;
 }

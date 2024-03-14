@@ -1,6 +1,3 @@
-/**
-add app logic => add query parameters
-**/
 
 const path = require('path');
 const express = require('express');
@@ -13,5 +10,5 @@ const PORT = process.env.PORT;
 app.listen(PORT, (error)=>{
     error ? console.log(error) : console.log(`listen to port ${PORT}`);
 });
-
+app.use(express.json());
 app.use(router);

@@ -1,6 +1,6 @@
 const axios = require('axios');
 const getMeteorsInfo = require('../helpers/utils');
-const buildMeteorUri = require('../helpers/helpers');
+const { buildMeteorUri } = require('../helpers/helpers');
 
 async function meteorController(req, res) {
     try {
@@ -19,6 +19,6 @@ async function meteorController(req, res) {
         console.error(error);
         res.status(500).json({error: error.message, status: 500});
     }
-};
+}
 
 module.exports = {meteorController};
