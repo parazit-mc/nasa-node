@@ -1,6 +1,6 @@
 const axios = require('axios');
-const getMeteorsInfo = require('../../helpers/utils');
-const { buildMeteorUri } = require('../../helpers/helpers');
+const getMeteorsInfo = require('../helpers/utils');
+const buildMeteorUri = require('../helpers/helpers');
 
 async function meteorController(req, res) {
     try {
