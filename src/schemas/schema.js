@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const roverImageSchema = Joi.object({
+const imageSchema = Joi.object({
     userId: Joi.number().required(),
     userName: Joi.string().required(),
     apiKey: Joi.string().required()
@@ -12,4 +12,4 @@ const meteorSchema = Joi.object({
     count: Joi.number().integer().min(1)
 });
 
-module.exports = {roverImageSchema, meteorSchema};
+module.exports = { imageSchema, meteorSchema };
