@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meteors</title>
+</head>
+<body>
+<h1>Meteors</h1>
+<ul>
+    {% for meteor in meteors %}
+    <li>ID: {{ meteor.id }}</li>
+    <li>Name: {{ meteor.name }}</li>
+    <li>Diameter (meters): {{ meteor.diameterMeters }}</li>
+    <li>Is Hazardous: {{ meteor.isHazardous }}</li>
+    <li>Approach Date: {{ meteor.approachDate }}</li>
+    <li>Velocity (km/s): {{ meteor.velocityKps }}</li>
+    <hr>
+    {% endfor %}
+</ul>
+</body>
+</html>
