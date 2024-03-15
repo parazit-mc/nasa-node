@@ -11,6 +11,7 @@ Sentry.init({
     // Set sampling rate for profiling - this is relative to tracesSampleRate
     profilesSampleRate: 1.0,
 });
+const nunjucks = require('nunjucks');
 
 const path = require('path');
 const express = require('express');
@@ -21,9 +22,15 @@ const { errorHandler } = require('../src/middlewares/errorHandler')
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 const PORT = process.env.PORT;
 
+nunjucks.configure(path.resolve(__dirname, './views'), {
+    autoescape: true,
+    express: app
+});
+
 app.use(express.json());
 app.use(router);
 app.use(errorHandler);
+app.set('view engine','html');
 
 app.listen(PORT, (error)=>{
     if (error){
