@@ -1,5 +1,5 @@
-const Sentry = require("@sentry/node");
-const { ProfilingIntegration } = require("@sentry/profiling-node");
+import * as Sentry from '@sentry/node';
+import  { ProfilingIntegration } from "@sentry/profiling-node";
 
 Sentry.init({
     dsn: "https://7521b884807badf08e17f15f96f82a57@o4506899478937600.ingest.us.sentry.io/4506899871694848",
@@ -11,15 +11,15 @@ Sentry.init({
     // Set sampling rate for profiling - this is relative to tracesSampleRate
     profilesSampleRate: 1.0,
 });
-const nunjucks = require('nunjucks');
-
-const path = require('path');
-const express = require('express');
+import nunjucks  from 'nunjucks';
+import dotenv from 'dotenv';
+import * as path  from 'path';
+import express from 'express';
 const app = express();
-const router = require('./routers/router')
-const { errorHandler } = require('../src/middlewares/errorHandler')
+import  router from './routers/router';
+import errorHandler  from './middlewares/errorHandler';
 
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const PORT = process.env.PORT;
 
 nunjucks.configure(path.resolve(__dirname, './views'), {
@@ -32,11 +32,11 @@ app.use(router);
 app.use(errorHandler);
 app.set('view engine','html');
 
-app.listen(PORT, (error)=>{
-    if (error){
-        console.log(error);
-        Sentry.captureException(error);
-    } else {
-        console.log(`listen to port ${PORT}`);
-    }
+const server = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+server.on('error', (error: Error) => {
+    console.error('Server startup error:', error);
+    Sentry.captureException(error);
 });

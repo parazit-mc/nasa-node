@@ -1,40 +1,54 @@
-const axios = require('axios');
-const path = require('path')
-const qs = require('qs');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+import axios  from 'axios';
+import qs  from 'qs';
+import { Request } from 'express';
+import { DateTimeFormatOptions } from 'intl';
+import { Meteor } from "../models/meteorModel";
 
-async function getMeteors(req) {
+interface MeteorNearby {
+    [key: string]: Meteor[];
+}
+
+export async function getMeteors(req: Request): Promise<Meteor[] | undefined> {
     const uri = buildMeteorUri();
     const response = await axios.get(uri);
     const meteorsNearby = response.data.near_earth_objects;
-    const queryDate = req.query.date ? new Date(req.query.date).toISOString().split('T')[0] : null;
+
+    const queryDate: string = req.query.date as string;
+
+    const queryCount: string = req.query.count as string;
+
     const isHazardous = req.query.isHazardous === 'true';
-    const count = req.query.count ? parseInt(req.query.count) : null;
+    const count = req.query.count ? parseInt(queryCount) : null;
+
     return getMeteorsInfo(meteorsNearby, queryDate, isHazardous, count);
 }
 
-function getMeteorsInfo(meteorsNearby, queryDate, isHazardous, count){
-
-    let meteors =  Object.values(meteorsNearby).flatMap(date=>
-        date.map(m=>({
+function getMeteorsInfo(
+    meteorsNearby: MeteorNearby,
+    queryDate: string | null,
+    isHazardous: boolean,
+    count:number | null
+): Meteor[] {
+    let result: Meteor[] = [];
+    const meteors = Object.values(meteorsNearby).flatMap((date: Meteor[]) =>
+        date.map((m: Meteor) => ({
             id: m.id,
             name: m.name,
-            diameterMeters: m.estimated_diameter.meters.estimated_diameter_max,
-            isHazardous: m.is_potentially_hazardous_asteroid,
-            approachDate: m.close_approach_data[0].close_approach_date,
-            velocityKps: m.close_approach_data[0].relative_velocity.kilometers_per_second
-        })))
+            estimated_diameter: m.estimated_diameter,
+            is_hazardous: m.is_hazardous,
+            close_approach_data: m.close_approach_data
+        })));
 
     if (queryDate) {
         result = meteors.filter(meteor =>
-            meteor.approachDate.split(' ')[0] === queryDate
+            meteor.close_approach_data[0].close_approach_date.split(' ')[0] === queryDate
         );
     } else {
         result = meteors;
     }
 
     if (isHazardous){
-        result = result.filter(meteor => meteor.isHazardous === true)
+        result = result.filter(meteor => meteor.is_hazardous);
     }
 
     if (count){
@@ -46,7 +60,7 @@ function getMeteorsInfo(meteorsNearby, queryDate, isHazardous, count){
 
 function buildMeteorUri(){
     const BASE_METEOR_URL = process.env.BASE_METEOR_URL;
-    const formatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const formatOptions: DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const today = new Date();
     const currentDay = today.getDay();
 
@@ -76,4 +90,4 @@ function buildMeteorUri(){
     return `${BASE_METEOR_URL}?${qs.stringify(queryParams)}`;
 }
 
-module.exports = { getMeteors }
+export default { getMeteors }

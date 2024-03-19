@@ -1,8 +1,9 @@
-const axios = require('axios');
-const qs = require('qs');
-const Sentry = require("@sentry/node");
+import axios  from 'axios';
+import qs  from 'qs';
+import * as Sentry from '@sentry/node';
+import { Request } from 'express';
 
-async function getImage(req){
+export async function getImage(req: Request): Promise<string[]>{
     const logged =
         `Authenticating user ${req.body.userId} ${req.body.userName}, api key ${req.body.apiKey}`;
     Sentry.captureMessage(logged);
@@ -12,13 +13,12 @@ async function getImage(req){
     return response.data.latest_photos[0].img_src;
 }
 
-function buildImageUri(apiKey){
+function buildImageUri(apiKey: string){
     const BASE_IMAGE_URL = process.env.BASE_IMAGE_URL;
     const queryParams = {
         API_KEY: apiKey
     };
-
     return `${BASE_IMAGE_URL}?${qs.stringify(queryParams)}`;
 }
 
-module.exports = { getImage };
+export default { getImage };
