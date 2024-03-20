@@ -1,6 +1,5 @@
 import axios  from 'axios';
 import qs  from 'qs';
-import { Request } from 'express';
 import { DateTimeFormatOptions } from 'intl';
 import { Meteor } from "../models/meteorModel";
 
@@ -8,19 +7,11 @@ interface MeteorNearby {
     [key: string]: Meteor[];
 }
 
-export async function getMeteors(req: Request): Promise<Meteor[] | undefined> {
+export async function getMeteors(date: string | null, isHazardous: boolean, count: number | null): Promise<Meteor[] | undefined> {
     const uri = buildMeteorUri();
     const response = await axios.get(uri);
     const meteorsNearby = response.data.near_earth_objects;
-
-    const queryDate: string = req.query.date as string;
-
-    const queryCount: string = req.query.count as string;
-
-    const isHazardous = req.query.isHazardous === 'true';
-    const count = req.query.count ? parseInt(queryCount) : null;
-
-    return getMeteorsInfo(meteorsNearby, queryDate, isHazardous, count);
+    return getMeteorsInfo(meteorsNearby, date, isHazardous, count);
 }
 
 function getMeteorsInfo(

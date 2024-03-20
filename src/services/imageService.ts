@@ -1,14 +1,13 @@
 import axios  from 'axios';
 import qs  from 'qs';
 import * as Sentry from '@sentry/node';
-import { Request } from 'express';
 
-export async function getImage(req: Request): Promise<string[]>{
+export async function getImage(userId: string, userName: string, apiKey: string): Promise<string[]>{
     const logged =
-        `Authenticating user ${req.body.userId} ${req.body.userName}, api key ${req.body.apiKey}`;
+        `Authenticating user ${userId} ${userName}, api key ${apiKey}`;
     Sentry.captureMessage(logged);
     console.log(logged);
-    const uri = buildImageUri(req.body.apiKey);
+    const uri = buildImageUri(apiKey);
     const response = await axios.get(uri);
     return response.data.latest_photos[0].img_src;
 }

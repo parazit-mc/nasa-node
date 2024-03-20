@@ -40,3 +40,12 @@ server.on('error', (error: Error) => {
     console.error('Server startup error:', error);
     Sentry.captureException(error);
 });
+
+process.on('SIGTERM', () => {
+    console.log('Received SIGTERM signal. Closing server gracefully...');
+
+    server.close(() => {
+        console.log('Server closed gracefully.');
+        process.exit(0);
+    });
+});

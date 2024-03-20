@@ -2,12 +2,12 @@ import * as Sentry from '@sentry/node';
 import { Request, Response, NextFunction } from 'express';
 import {Schema} from "joi";
 
-class RequestValidationError extends Error {
+export class RequestValidationError extends Error {
     statusCode: number;
 
-    constructor(message: string) {
+    constructor(message: string, statusCode: number) {
         super(message);
-        this.statusCode = 400;
+        this.statusCode = statusCode;
     }
 }
 
@@ -16,11 +16,12 @@ export function validateRequest(schema: Schema, property: keyof Request) {
         const { error } = schema.validate(req[property]);
         if (error) {
             const errorMessage = property === 'body' ? 'Request body malformed' : 'Path param contains errors';
-            const validationError = new RequestValidationError(errorMessage);
-            validationError.statusCode = 400;
-            validationError.message = error.details[0].message;
+            const validationError = new RequestValidationError(errorMessage, 400);
+            // validationError.statusCode = 400;
+            // validationError.message = error.details[0].message;
             Sentry.captureException(validationError);
-            return res.status(400).json({ status: 400, message: errorMessage, error: error.details[0].message });
+            // return res.status(400).json({ status: 400, message: errorMessage, error: error.details[0].message });
+            throw validationError;
         }
         next();
     };
