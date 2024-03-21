@@ -1,9 +1,9 @@
-const express = require('express');
+import * as express from 'express';
 const router = express.Router();
-const { meteorApiController, imageApiController } = require('../controllers/apiController')
-const { meteorWebController, imageWebController } = require('../controllers/webController')
-const { validateRequest } = require('../validators/validator');
-const { imageSchema, meteorSchema } = require('../schemas/schema');
+import { meteorApiController, imageApiController }  from '../controllers/apiController';
+import { meteorWebController, imageWebController } from '../controllers/webController';
+import   { validateRequest }  from '../validators/validator';
+import  { imageSchema, meteorSchema } from '../schemas/schema';
 
 router.get('/meteors', validateRequest(meteorSchema, 'query'), meteorWebController);
 router.get('/api/v1/meteors', validateRequest(meteorSchema, 'query'), meteorApiController);
@@ -11,4 +11,4 @@ router.get('/api/v1/meteors', validateRequest(meteorSchema, 'query'), meteorApiC
 router.post('/api/v1/rover-image', validateRequest(imageSchema, 'body'),  imageApiController);
 router.post('/rover-image', validateRequest(imageSchema, 'body'),  imageWebController);
 
-module.exports = router;
+export default   router ;

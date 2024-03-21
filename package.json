@@ -2,9 +2,10 @@
   "name": "nasa-node-1",
   "version": "1.0.0",
   "description": "test nasa api",
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "ts-node-dev src/index.ts",
+    "precommit": "lint-staged"
   },
   "repository": {
     "type": "git",
@@ -17,14 +18,36 @@
   },
   "homepage": "https://github.com/parazit-mc/nasa-node#readme",
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.28",
+    "@types/nunjucks": "^3.2.6",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-security": "^2.1.1",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "nodemon": "^3.1.0",
+    "ts-node-dev": "^2.0.0"
   },
   "dependencies": {
     "@sentry/node": "^7.106.1",
     "@sentry/profiling-node": "^7.106.1",
+    "@types/intl": "^1.2.2",
     "axios": "^1.6.7",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
+    "intl": "^1.2.5",
     "joi": "^17.12.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit"
+    }
   }
 }
