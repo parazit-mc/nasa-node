@@ -5,7 +5,9 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "prettier-format": "npx prettier --config .prettierrc src/**/*.ts --write",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -19,10 +21,12 @@
   "homepage": "https://github.com/parazit-mc/nasa-node#readme",
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.28",
     "@types/nunjucks": "^3.2.6",
-    "@typescript-eslint/eslint-plugin": "^7.2.0",
-    "@typescript-eslint/parser": "^7.2.0",
+    "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^9.1.0",
@@ -31,8 +35,12 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-security": "^2.1.1",
     "husky": "^9.0.11",
+    "jest": "^29.7.0",
     "lint-staged": "^15.2.2",
     "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
     "ts-node-dev": "^2.0.0"
   },
   "dependencies": {
