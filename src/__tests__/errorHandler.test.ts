@@ -36,7 +36,7 @@ describe('errorHandler', () => {
     expect(Sentry.captureException).toHaveBeenCalledWith(err);
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
-      error: 'Internal Server Error",
+      error: 'Internal Server Error',
       status: 500
     });
   });

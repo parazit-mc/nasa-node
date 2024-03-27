@@ -1,20 +1,20 @@
-import { Request, Response, NextFunction } from 'express";
-import { getMeteors } from "../services/meteorService";
-import { getImage } from "../services/imageService";
+import { Request, Response, NextFunction } from 'express';
+import { getMeteors } from '../services/meteorService';
+import { getImage } from '../services/imageService';
 import {
   getMeteorRequestData,
   getImageRequestData
-} from "../utils/requestData";
+} from '../utils/requestData';
 import {
   meteorWebController,
   imageWebController
-} from "../controllers/webController";
+} from '../controllers/webController';
 
-jest.mock("../services/meteorService");
-jest.mock("../services/imageService");
-jest.mock("../utils/requestData");
+jest.mock('../services/meteorService');
+jest.mock('../services/imageService');
+jest.mock('../utils/requestData');
 
-describe("meteorWebController", () => {
+describe('meteorWebController', () => {
   const mockRequest = {} as Request;
   const mockResponse = {
     render: jest.fn()
@@ -25,11 +25,11 @@ describe("meteorWebController", () => {
     jest.clearAllMocks();
   });
 
-  it("should render meteor.html with data retrieved", async () => {
-    const date = "2024-03-21";
+  it('should render meteor.html with data retrieved', async () => {
+    const date = '2024-03-21';
     const isHazardous = true;
     const count = 10;
-    const mockMeteors = [{ id: 1, name: "Meteor 1" }];
+    const mockMeteors = [{ id: 1, name: 'Meteor 1' }];
 
     (getMeteorRequestData as jest.Mock).mockReturnValue({
       date,
@@ -42,14 +42,14 @@ describe("meteorWebController", () => {
 
     expect(getMeteorRequestData).toHaveBeenCalledWith(mockRequest);
     expect(getMeteors).toHaveBeenCalledWith(date, isHazardous, count);
-    expect(mockResponse.render).toHaveBeenCalledWith("meteor.html", {
+    expect(mockResponse.render).toHaveBeenCalledWith('meteor.html', {
       meteors: mockMeteors
     });
     expect(mockNext).not.toHaveBeenCalled();
   });
 
-  it("should call next with error when error happened", async () => {
-    const errorMessage = "Failed to retrieve meteor data";
+  it('should call next with error when error happened', async () => {
+    const errorMessage = 'Failed to retrieve meteor data';
     (getMeteorRequestData as jest.Mock).mockReturnValue({});
     (getMeteors as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
@@ -62,7 +62,7 @@ describe("meteorWebController", () => {
   });
 });
 
-describe("imageWebController", () => {
+describe('imageWebController', () => {
   const mockRequest = {} as Request;
   const mockResponse = {
     render: jest.fn()
@@ -73,11 +73,11 @@ describe("imageWebController", () => {
     jest.clearAllMocks();
   });
 
-  it("should render roverImage.html with URL", async () => {
-    const userId = "user123";
-    const userName = "JohnDoe";
-    const apiKey = "api-key";
-    const imageUrl = "https://example.com/image.jpg";
+  it('should render roverImage.html with URL', async () => {
+    const userId = 'user123';
+    const userName = 'JohnDoe';
+    const apiKey = 'api-key';
+    const imageUrl = 'https://example.com/image.jpg';
 
     (getImageRequestData as jest.Mock).mockReturnValue({
       userId,
@@ -90,14 +90,14 @@ describe("imageWebController", () => {
 
     expect(getImageRequestData).toHaveBeenCalledWith(mockRequest);
     expect(getImage).toHaveBeenCalledWith(userId, userName, apiKey);
-    expect(mockResponse.render).toHaveBeenCalledWith("roverImage.html", {
+    expect(mockResponse.render).toHaveBeenCalledWith('roverImage.html', {
       imageUrl
     });
     expect(mockNext).not.toHaveBeenCalled();
   });
 
-  it("should call next with error when error happened", async () => {
-    const errorMessage = "Failed to retrieve image";
+  it('should call next with error when error happened', async () => {
+    const errorMessage = 'Failed to retrieve image';
     (getImageRequestData as jest.Mock).mockReturnValue({});
     (getImage as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 

@@ -62,9 +62,9 @@ describe('meteorSchema validation', () => {
     expect(error).toBeUndefined();
   });
 
-  it('should fail validation if date query param is invalid", () => {
+  it('should fail validation if date query param is invalid', () => {
     const invalidMeteorData = {
-      date: "invalid_date",
+      date: 'invalid_date',
       isHazardous: isHazardous,
       count: 5
     };
@@ -73,18 +73,18 @@ describe('meteorSchema validation', () => {
     expect(error).toBeDefined();
   });
 
-  it("should fail validation if count query param is invalid", () => {
+  it('should fail validation if count query param is invalid', () => {
     const invalidMeteorData = {
       date: queryDate,
       isHazardous: isHazardous,
-      count: "aaa"
+      count: 'aaa'
     };
 
     const { error } = meteorSchema.validate(invalidMeteorData);
     expect(error).toBeDefined();
   });
 
-  it("should fail validation if count query param is less than 1", () => {
+  it('should fail validation if count query param is less than 1', () => {
     const invalidMeteorData = {
       date: queryDate,
       isHazardous: isHazardous,
