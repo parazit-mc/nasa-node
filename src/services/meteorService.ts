@@ -2,6 +2,9 @@ import axios from 'axios';
 import qs from 'qs';
 import { Meteor } from '../models/meteorModel';
 import { formatOptions } from '../utils/requestData';
+import NodeCache from 'node-cache';
+
+const cache = new NodeCache({stdTTL: 3600});
 
 interface MeteorNearby {
   [key: string]: Meteor[];
@@ -12,10 +15,21 @@ export async function getMeteors(
   isHazardous: boolean,
   count: number | null
 ): Promise<Meteor[] | undefined> {
+  const cacheKey = JSON.stringify({date, isHazardous, count});
+  const cachedResult = cache.get<Meteor[]>(cacheKey);
+
+  if (cachedResult){
+    console.log('cache hit ', JSON.stringify({date, isHazardous, count}));
+    return cachedResult;
+  }
+
   const uri = buildMeteorUri();
   const response = await axios.get(uri);
   const meteorsNearby = response.data.near_earth_objects;
-  return getMeteorsInfo(meteorsNearby, date, isHazardous, count);
+  const result = getMeteorsInfo(meteorsNearby, date, isHazardous, count);
+  cache.set(cacheKey, result);
+  console.log('cached meteor result saved');
+  return result;
 }
 
 function getMeteorsInfo(
